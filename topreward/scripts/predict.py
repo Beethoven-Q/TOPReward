@@ -28,6 +28,7 @@ from topreward.data_loaders.base import BaseDataLoader
 from topreward.mapper.base import BaseMapper
 from topreward.metrics.voc import VOCMetric
 from topreward.results.prediction import aggregate_metrics, summarize_failures
+from topreward.utils.plotting import plot_normalized_progress_reward, plot_exponentiated_progress_reward
 from topreward.utils import inference as infer_utils
 from topreward.utils.logging_config import setup_logging
 
@@ -213,6 +214,9 @@ def main(config: DictConfig) -> None:
             )
             with output_path.open("a", encoding="utf-8") as output_file:
                 output_file.write(json.dumps(record.to_dict(), ensure_ascii=False) + "\n")
+            if offset == 0 and resume_from_index == 0:
+                plot_normalized_progress_reward(record, output_dir)
+                plot_exponentiated_progress_reward(record, output_dir)
 
         records.append(record)
 
