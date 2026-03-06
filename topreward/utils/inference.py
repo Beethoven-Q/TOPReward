@@ -162,6 +162,7 @@ def compute_instruction_reward_on_fewshot_input(
     ex: FewShotInput,
     client: BaseModelClient,
     dataset_name: str,
+    num_samples: int = 15,
     reduction: str = "mean",
     fps: float | None = None,
     use_video_description: bool = False,
@@ -228,7 +229,7 @@ def compute_instruction_reward_on_fewshot_input(
     kwargs = {
         "frames": frames,
         "instruction": instruction,
-        "num_samples": 15,
+        "num_samples": num_samples,
         "reduction": reduction,
         "fps": fps,
         "use_video_description": use_video_description,
@@ -260,8 +261,10 @@ def compute_instruction_reward_on_fewshot_input(
     # and ground truth completion rates aligned to prefix lengths.
     voc_score = None
     if result is not None and result.normalized_prefix_rewards is not None:
-        true_progress = ex.eval_episode.original_frames_task_completion_rates
         normalized_rewards = result.normalized_prefix_rewards
+        # Use prefix_lengths as true progress: longer prefix = further along trajectory.
+        # Spearman is rank-based so the exact scale doesn't matter.
+        true_progress = result.prefix_lengths
         voc_score = value_order_correlation(normalized_rewards, true_progress)
         voc_score = float(voc_score)
         logger.info(f"Example {idx}: VOC={voc_score:.4f}")

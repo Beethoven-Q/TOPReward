@@ -108,3 +108,4 @@ specs/
 # AI2-internal infrastructure scripts
 # =============================================================================
 gantry_*.sh
+*.mp4

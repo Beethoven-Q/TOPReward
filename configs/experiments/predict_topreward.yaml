@@ -28,6 +28,7 @@ prediction:
   resume_from_path: null   # Append to an existing predictions JSONL (relative to output_dir if not absolute)
 
   # TOPReward-specific options:
+  num_samples: 15          # Number of uniformly spaced prefix lengths to evaluate
   reduction: mean          # Reduction for TOPReward: 'mean' or 'sum'
   use_video_description: false  # If true, generate trajectory description before computing reward
   use_subsampled_video: false  # If true, use subsampled video for TOPReward computation

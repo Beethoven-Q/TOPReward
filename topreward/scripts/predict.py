@@ -147,6 +147,7 @@ def main(config: DictConfig) -> None:
             pass
 
     # TOPReward-specific config
+    ir_num_samples = int(config.prediction.get("num_samples", 15))
     ir_reduction = str(config.prediction.get("reduction", "mean"))
     ir_use_video_description = bool(config.prediction.get("use_video_description", False))
     ir_use_subsampled_video = bool(config.prediction.get("use_subsampled_video", False))
@@ -203,6 +204,7 @@ def main(config: DictConfig) -> None:
                 ex,
                 client,
                 config.dataset.name,
+                num_samples=ir_num_samples,
                 reduction=ir_reduction,
                 fps=ir_fps,
                 use_video_description=ir_use_video_description,

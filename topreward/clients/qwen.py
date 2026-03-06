@@ -203,7 +203,7 @@ class QwenClient(BaseModelClient):
             )
         else:
             # Original prompt without description
-            prompt_text = "The above video shows a robot manipulation trajectory that completes the following task: "
+            prompt_text = "The above video shows a person completing the following task: "
 
         content = [
             {"type": "video", "video": pil_frames, "fps": fps},
