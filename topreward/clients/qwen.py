@@ -23,7 +23,10 @@ class QwenClient(BaseModelClient):
         max_input_length: int = 32768,
     ):
         super().__init__(rpm=rpm)
-        self.model = Qwen3VLForConditionalGeneration.from_pretrained(model_name, torch_dtype="auto", device_map="auto", attn_implementation="flash_attention_2")
+        try:
+            self.model = Qwen3VLForConditionalGeneration.from_pretrained(model_name, torch_dtype="auto", device_map="auto", attn_implementation="flash_attention_2")
+        except ImportError:
+            self.model = Qwen3VLForConditionalGeneration.from_pretrained(model_name, torch_dtype="auto", device_map="auto", attn_implementation="sdpa")
         self.processor = AutoProcessor.from_pretrained(model_name, trust_remote_code=True)
         logger.info(type(self.processor))
         self.model_name = model_name
